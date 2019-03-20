@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import { getNoOfPages, addUniqueKey } from './utils/CommonUtils';
 import './datagrid.css';
+import './loader.css';
 import DataGridSection from './components/dataGrid/DataGrid';
 import TableHeader from './components/dataGrid/TableHeader';
 
