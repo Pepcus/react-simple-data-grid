@@ -9,7 +9,8 @@
     "react": "^16.6.3",
     "react-csv": "^1.0.19",
     "react-dom": "^16.2.0",
-    "react-icons": "^3.2.2"
+    "react-icons": "^3.2.2",
+    "react-resizable": "^1.7.5"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -29,7 +30,8 @@
     "style-loader": "^0.21.0",
     "webpack": "^4.8.1",
     "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "react-resizable": "^1.7.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

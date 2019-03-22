@@ -12,10 +12,14 @@ class Row extends Component {
     super(props);
     this.renderRows = this.renderRows.bind(this);
   }
-  renderRows({ data, currentMetaData, styles }) {
+  renderRows({ data, currentMetaData, styles, customWidth }) {
     return (
       <div className="table-row" style={styles.gridTableRow}>
         {currentMetaData.headerConfig.map((columnMetaData) => {
+          styles={
+            ...styles,
+            width: customWidth[columnMetaData.key],
+          }
         if (columnMetaData.customComponent) {
           const CustomComponent = columnMetaData.customComponent;
           return (
@@ -62,10 +66,10 @@ class Row extends Component {
   }
 
   render() {
-    const { data, currentMetaData, styles } = this.props;
+    const { data, currentMetaData, styles, customWidth } = this.props;
     return (
       <div className="table-body-row">
-        {this.renderRows({ data, currentMetaData, styles })}
+        {this.renderRows({ data, currentMetaData, styles, customWidth })}
       </div>
     );
   }

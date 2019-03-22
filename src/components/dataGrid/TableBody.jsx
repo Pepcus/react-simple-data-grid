@@ -15,25 +15,29 @@ class TableBody extends Component {
     this.renderTableBody = this.renderTableBody.bind(this);
   }
 
-  renderTableBody({ tableData, currentMetaData, styles }) {
+  renderTableBody({ tableData, currentMetaData, styles, customWidth }) {
     if (isEmpty(tableData)) {
       return null;
     }
-    return tableData.map(rowData => (
-      <Row
-        handleSingleCheckBoxChange={this.props.handleSingleCheckBoxChange}
-        data={rowData}
-        currentMetaData={currentMetaData}
-        styles={styles}
-        key={rowData.id}
-      />
-    ));
+    return tableData.map(rowData => {
+      return (
+        <Row
+          handleSingleCheckBoxChange={this.props.handleSingleCheckBoxChange}
+          data={rowData}
+          currentMetaData={currentMetaData}
+          styles={styles}
+          key={rowData.id}
+          customWidth={customWidth}
+        />
+      );
+    });
   }
+
   render() {
-    const { tableData, currentMetaData, styles } = this.props;
+    const { tableData, currentMetaData, styles, customWidth } = this.props;
     return (
       <div className="table-body">
-        {this.renderTableBody({ tableData, currentMetaData, styles })}
+        {this.renderTableBody({ tableData, currentMetaData, styles, customWidth })}
       </div>
     );
   }
@@ -47,7 +51,8 @@ TableBody.propTypes = {
 };
 
 TableBody.defaultProps = {
-  handleSingleCheckBoxChange: () => {},
+  handleSingleCheckBoxChange: () => {
+  },
   tableData: [],
   currentMetaData: {},
   styles: {},

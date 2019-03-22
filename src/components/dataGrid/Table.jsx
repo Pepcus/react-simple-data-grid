@@ -39,6 +39,7 @@ class Table extends Component {
         sortOrder: '',
         columnName: '',
       },
+      customWidth: {},
     };
     this.onSearch = this.onSearch.bind(this);
     this.onSort = this.onSort.bind(this);
@@ -49,6 +50,7 @@ class Table extends Component {
     this.setSortObject = this.setSortObject.bind(this);
     this.handleAllCheckBoxChange = this.handleAllCheckBoxChange.bind(this);
     this.handleSingleCheckBoxChange = this.handleSingleCheckBoxChange.bind(this);
+    this.onResizeColumnWidth = this.onResizeColumnWidth.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -120,6 +122,7 @@ class Table extends Component {
         tableData={tableRowsData}
         currentMetaData={this.state.currentMetaData}
         styles={this.props.styles}
+        customWidth={this.state.customWidth}
       />
     );
   }
@@ -212,6 +215,15 @@ class Table extends Component {
     );
   }
 
+  onResizeColumnWidth(id, width){
+    this.setState((prevState) => ({
+      customWidth: {
+        ...prevState.customWidth,
+        [id]: width,
+      }
+    }));
+  }
+
   render() {
     return (
       <div className="table">
@@ -228,6 +240,7 @@ class Table extends Component {
             onSearch={this.onSearch}
             onFilterChange={this.onFilterChange}
             appliedFilter={this.state.appliedFilter}
+            onResizeColumnWidth={this.onResizeColumnWidth}
           />
           {this.renderTableBody()}
         </div>
