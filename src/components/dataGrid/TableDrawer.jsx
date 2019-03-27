@@ -52,14 +52,12 @@ class TableDrawer extends Component {
   renderExportButton() {
     if (this.props.positions.exportButton) {
       return (
-        <div>
           <GridExport
             currentMetaData={this.props.currentMetaData}
             currentData={this.props.currentData}
             onClick={this.props.fileDownloadMessagePopup}
             fileDownloadMessagePopup={this.props.fileDownloadMessagePopup}
         />
-        </div>
       );
     }
     return null;
