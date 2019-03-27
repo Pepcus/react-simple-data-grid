@@ -13,7 +13,7 @@ class RowCell extends Component {
   render() {
     const { children, title, styles, cellId } = this.props;
     return (
-      <div className={`row cell__${cellId}`} style={{width: `${styles.width}px`}}>
+      <div className={`row cell__${cellId}`} style={{ width: `${styles.width}px` }}>
         <div
           className="table-cell"
           title={title}

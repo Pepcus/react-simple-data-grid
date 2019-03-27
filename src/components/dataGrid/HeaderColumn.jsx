@@ -9,8 +9,10 @@ class HeaderColumn extends React.Component {
   constructor(props) {
     super(props);
     this.MyRef = React.createRef();
+    this.state = {
+      width: window.innerWidth,
+    };
     this.onResize = this.onResize.bind(this);
-    this.state = {};
     this.renderFirstDiv = this.renderFirstDiv.bind(this);
     this.renderSecondDiv = this.renderSecondDiv.bind(this);
   }
@@ -31,7 +33,8 @@ class HeaderColumn extends React.Component {
       <div
         className={`header-column cell__${this.props.columnMetaData.key} ${className}`}
         ref={this.MyRef}
-        style={this.props.columnMetaData.isLastColumn ? { width: `${this.state.width}px` } : { width: `${this.state.width}px` }}>
+        style={this.props.columnMetaData.isLastColumn ? { width: `${this.state.width}px` } : { width: `${this.state.width}px` }}
+      >
         <div
           title={this.props.columnMetaData.label}
           className="table-heading"
@@ -41,7 +44,8 @@ class HeaderColumn extends React.Component {
           <input
             type="checkbox"
             onChange={this.props.handleAllCheckBoxChange}
-            checked={this.props.allCheckBox ? 'checked' : ''} />
+            checked={this.props.allCheckBox ? 'checked' : ''}
+          />
         </div>
       </div>
     );
@@ -56,7 +60,8 @@ class HeaderColumn extends React.Component {
       <div
         className={`header-column cell__${this.props.columnMetaData.key} ${className}`}
         ref={this.MyRef}
-        style={this.props.columnMetaData.isLastColumn ? { width: `${this.state.width}px` } : { width: `${this.state.width}px`}}>
+        style={this.props.columnMetaData.isLastColumn ? { width: `${this.state.width}px` } : { width: `${this.state.width}px` }}
+      >
         <div
           title={this.props.columnMetaData.label}
           className="table-heading"
@@ -77,10 +82,10 @@ class HeaderColumn extends React.Component {
       </div>
     );
   }
-  onResize(event, {element, size}) {
+  onResize(event, { element, size }) {
     if (!this.props.columnMetaData.isLastColumn) {
       this.setState({
-        width: size.width
+        width: size.width,
       });
     }
     this.props.onResizeColumnWidth(this.props.columnMetaData.key, size.width);
@@ -89,31 +94,49 @@ class HeaderColumn extends React.Component {
     const {
       enableRowSelection,
       columnMetaData,
+      resizeColumnWidth,
     } = this.props;
-
     if ((columnMetaData.key === 'grid__select-column') && (enableRowSelection)) {
-      if (this.props.columnMetaData.isLastColumn) {
-       return this.renderFirstDiv()
+      if (this.props.columnMetaData.isLastColumn || !resizeColumnWidth) {
+        return this.renderFirstDiv();
+      } else if (resizeColumnWidth) {
+        return (
+          <Resizable
+            onResize={this.onResize}
+            width={this.state.width ? this.state.width : window.innerWidth}
+            height={window.innerHeight}
+          >
+            {this.renderFirstDiv()}
+          </Resizable>
+        );
       }
       return (
-        <Resizable onResize={this.onResize} width={this.state.width} >
-          {this.renderFirstDiv()}
+        this.renderFirstDiv()
+      );
+    }
+    if (this.props.columnMetaData.isLastColumn || !resizeColumnWidth) {
+      return this.renderSecondDiv();
+    } else if (resizeColumnWidth) {
+      return (
+        <Resizable
+          onResize={this.onResize}
+          width={this.state.width ? this.state.width : window.innerWidth}
+          height={window.innerHeight}
+        >
+          {this.renderSecondDiv()}
         </Resizable>
       );
     }
-    if (this.props.columnMetaData.isLastColumn) {
-     return this.renderSecondDiv();
-    }
     return (
-      <Resizable onResize={this.onResize} width={this.state.width} >
-        {this.renderSecondDiv()}
-      </Resizable>
+      this.renderSecondDiv()
     );
   }
 }
 
 HeaderColumn.propTypes = {
   handleAllCheckBoxChange: PropTypes.func,
+  handleAllCheckBox: PropTypes.func,
+  onResizeColumnWidth: PropTypes.func,
   allCheckBox: PropTypes.bool,
   columnMetaData: PropTypes.object,
   onFilterChange: PropTypes.func.isRequired,
@@ -122,14 +145,18 @@ HeaderColumn.propTypes = {
   getFilterValue: PropTypes.func.isRequired,
   enableRowSelection: PropTypes.bool,
   enableAllRowSelection: PropTypes.bool,
+  resizeColumnWidth: PropTypes.bool,
 };
 
 HeaderColumn.defaultProps = {
+  handleAllCheckBoxChange: () => {},
   handleAllCheckBox: () => {},
+  onResizeColumnWidth: () => {},
   allCheckBox: false,
   columnMetaData: {},
   enableRowSelection: false,
   enableAllRowSelection: false,
+  resizeColumnWidth: false,
 };
 
 export default HeaderColumn;
