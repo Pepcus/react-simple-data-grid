@@ -3655,6 +3655,7 @@ export const tableMetaData = () => ({
   includeAllInGlobalFilter: false,
   includeGlobalFilter: true,
   exportFileName: `FileName-${new Date()}.csv`, // For Demo
+  loaderColor: '#a69fa8',
 });
 
 export const getStyles = () => ({

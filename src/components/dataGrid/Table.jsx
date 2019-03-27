@@ -11,7 +11,7 @@ import TableDrawer from './TableDrawer';
 import TableFooter from './TableFooter';
 import { paginatedData, getNoOfPages } from '../.././utils/CommonUtils';
 import '../../datagrid.css';
-
+import CustomLoader from './CustomLoader';
 /**
  * The Table component for the grid which will render -
  * TableDrawer, TableHeader, TableBody and TableFooter.
@@ -21,20 +21,17 @@ import '../../datagrid.css';
  */
 class Table extends Component {
   constructor(props) {
-    const {
-      data,
-      metaData,
-    } = props;
     super(props);
     this.state = {
       allCheckBox: false,
       currentPage: 1,
-      recordsPerPage: metaData.recordsPerPage,
+      recordsPerPage: props.metaData.recordsPerPage,
       appliedFilter: {},
-      originalData: data,
-      currentData: data,
-      originalMetaData: metaData,
-      currentMetaData: metaData,
+      originalData: props.data,
+      currentData: props.data,
+      originalMetaData: props.metaData,
+      currentMetaData: props.metaData,
+      isLoading: false,
       sort: {
         sortOrder: '',
         columnName: '',
@@ -49,10 +46,13 @@ class Table extends Component {
     this.setSortObject = this.setSortObject.bind(this);
     this.handleAllCheckBoxChange = this.handleAllCheckBoxChange.bind(this);
     this.handleSingleCheckBoxChange = this.handleSingleCheckBoxChange.bind(this);
+    this.renderLoader = this.renderLoader.bind(this);
+    this.handleSelectedRows = this.handleSelectedRows.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.data, this.props.data) || !isEqual(nextProps.metaData, this.props.metaData)) {
+    if (!isEqual(nextProps.data, this.props.data)
+      || !isEqual(nextProps.metaData, this.props.metaData)) {
       let temporaryData = filterData(this.state.appliedFilter, nextProps.data);
       temporaryData = orderBy(temporaryData, this.state.sort.columnName, this.state.sort.sortOrder);
       this.setState({
@@ -64,6 +64,7 @@ class Table extends Component {
       });
     }
   }
+
   setSortObject(columnName, sortOrder) {
     this.setState({
       sort: {
@@ -73,25 +74,24 @@ class Table extends Component {
       },
     });
   }
-  handleAllCheckBoxChange() {
-    let selectedRows = [];
-    const temporaryAllCheck = !this.state.allCheckBox;
-    if (temporaryAllCheck) {
-      selectedRows = this.state.currentData.map(currentDataObj => (
-        { ...currentDataObj, isChecked: true }
-      ));
-      this.setState({
-        allCheckBox: temporaryAllCheck,
-      });
-    } else if (!temporaryAllCheck) {
-      selectedRows = this.state.currentData.map(currentDataObj => (
-        { ...currentDataObj, isChecked: false }
-      ));
-      this.setState({
-        allCheckBox: temporaryAllCheck,
-      });
-    }
+
+  handleSelectedRows(selectedRows, temporaryAllCheck) {
+    this.setState({
+      isLoading: false,
+      allCheckBox: temporaryAllCheck,
+    });
     this.props.getSelectedRow(selectedRows);
+  }
+
+  handleAllCheckBoxChange() {
+    this.setState({
+      isLoading: true,
+    });
+    const temporaryAllCheck = !this.state.allCheckBox;
+    const selectedRows = this.state.currentData.map(currentDataObj => (
+      { ...currentDataObj, isChecked: temporaryAllCheck }
+    ));
+    setTimeout(() => this.handleSelectedRows(selectedRows, temporaryAllCheck), 100);
   }
 
   handleSingleCheckBoxChange(event, data) {
@@ -141,7 +141,8 @@ class Table extends Component {
       ...appliedFilter,
       [inputValue.selectedColumn]: inputValue.searchString,
     };
-    let temporaryData = orderBy(this.state.originalData, this.state.sort.columnName, this.state.sort.sortOrder)
+    const temporaryData
+      = orderBy(this.state.originalData, this.state.sort.columnName, this.state.sort.sortOrder);
     this.setState({
       appliedFilter,
       currentData: filterData(appliedFilter, temporaryData),
@@ -176,7 +177,8 @@ class Table extends Component {
 
   onPagination(value) {
     let { currentPage } = this.state;
-    const noOfPages = getNoOfPages(this.state.currentData, this.state.originalMetaData.recordsPerPage);
+    const noOfPages
+      = getNoOfPages(this.state.currentData, this.state.originalMetaData.recordsPerPage);
     if (value === 'lastPage' && currentPage < noOfPages) {
       currentPage = noOfPages;
     }
@@ -212,9 +214,18 @@ class Table extends Component {
     );
   }
 
+  renderLoader() {
+    const { isLoading, currentMetaData: { loaderColor = '#5f8ca6' } } = this.state;
+    if (isLoading) {
+      return <CustomLoader loaderColor={loaderColor} />;
+    }
+    return null;
+  }
+
   render() {
     return (
       <div className="table">
+        {this.renderLoader()}
         {this.renderTableDrawer(this.state.currentData, this.state.currentMetaData.topDrawer, 'top')}
         <div className="render-table" style={this.props.styles.gridTable}>
           <TableHeader
