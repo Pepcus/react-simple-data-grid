@@ -55,8 +55,7 @@ class TableDrawer extends Component {
           <GridExport
             currentMetaData={this.props.currentMetaData}
             currentData={this.props.currentData}
-            onClick={this.props.fileDownloadMessagePopup}
-            fileDownloadMessagePopup={this.props.fileDownloadMessagePopup}
+            onClickAllExport={this.props.onClickAllExport}
         />
       );
     }
@@ -100,7 +99,7 @@ TableDrawer.propTypes = {
   currentPage: PropTypes.number,
   recordsPerPage: PropTypes.number,
   positions: PropTypes.object,
-  fileDownloadMessagePopup: PropTypes.func,
+  onClickAllExport: PropTypes.func,
 };
 
 TableDrawer.defaultProps = {
@@ -110,7 +109,7 @@ TableDrawer.defaultProps = {
   currentPage: 0,
   recordsPerPage: 0,
   positions: {},
-  fileDownloadMessagePopup: () => {},
+  onClickAllExport: () => {},
 };
 
 export default TableDrawer;

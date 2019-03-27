@@ -30,7 +30,7 @@ class GridExport extends Component {
         title="Export"
         asyncOnClick={true}
         className={this.renderCSVLinkClassName()}
-        onClick={() => { if (this.props.fileDownloadMessagePopup) { return this.props.fileDownloadMessagePopup(true); } }}
+        onClick={() => { if (this.props.onClickAllExport) { return this.props.onClickAllExport(true); } }}
       >
         <IoMdDownload />
       </CSVLink>
@@ -39,12 +39,12 @@ class GridExport extends Component {
 }
 export default GridExport;
 GridExport.propTypes = {
-  fileDownloadMessagePopup: PropTypes.func,
+  onClickAllExport: PropTypes.func,
   currentData: PropTypes.array,
   currentMetaData: PropTypes.object,
 };
 GridExport.defaultProps = {
   currentData: [],
   currentMetaData: {},
-  fileDownloadMessagePopup: () => {},
+  onClickAllExport: () => {},
 };
