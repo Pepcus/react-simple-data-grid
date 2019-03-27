@@ -361,19 +361,14 @@ body{
 }
 .link:active {
     background-color: rgba(65, 67, 64, 0.15);
-    border: 1px solid #085d6659;
     color: #085d66;
     box-shadow:none;
     padding: 4px 4px 0px;
-    border-radius: 6px;
-    display:flex;
-    justify-content: flex-end;
     margin-top: 4px;
     margin-bottom: 3px;
     margin-right: 4px;
     font-size: 12px;
     text-decoration: none;
-    outline: medium none;
     transform: translateY(1px) translateX(1px);
 }
 .clearFilterButton{
@@ -434,4 +429,3 @@ body{
 .pagination-text {
     padding:0 3px;
 }
-

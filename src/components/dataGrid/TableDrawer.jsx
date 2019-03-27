@@ -48,14 +48,14 @@ class TableDrawer extends Component {
       );
     }
     return null;
-  }
-
+}
   renderExportButton() {
     if (this.props.positions.exportButton) {
       return (
-        <GridExport
-          currentMetaData={this.props.currentMetaData}
-          currentData={this.props.currentData}
+          <GridExport
+            currentMetaData={this.props.currentMetaData}
+            currentData={this.props.currentData}
+            onClickAllExport={this.props.onClickAllExport}
         />
       );
     }
@@ -99,6 +99,7 @@ TableDrawer.propTypes = {
   currentPage: PropTypes.number,
   recordsPerPage: PropTypes.number,
   positions: PropTypes.object,
+  onClickAllExport: PropTypes.func,
 };
 
 TableDrawer.defaultProps = {
@@ -108,6 +109,7 @@ TableDrawer.defaultProps = {
   currentPage: 0,
   recordsPerPage: 0,
   positions: {},
+  onClickAllExport: () => {},
 };
 
 export default TableDrawer;
