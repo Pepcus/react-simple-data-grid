@@ -3649,7 +3649,7 @@ export const tableMetaData = () => ({
     'exportButton': false,
     'totalRecords': true,
   },
-  // resizeColumnWidth: true,
+  resizeColumnWidth: true,
   enableRowSelection: true,
   enableAllRowSelection: true,
   recordsPerPage: 25,
