@@ -70,6 +70,7 @@ class DataGrid extends Component {
         data={tempData}
         metaData={this.props.metaData}
         styles={this.props.styles}
+        fileDownloadMessagePopup={this.props.fileDownloadMessagePopup}
       />
     );
   }
@@ -77,6 +78,7 @@ class DataGrid extends Component {
 
 DataGrid.propTypes = {
   getSelectedRow: PropTypes.func,
+  fileDownloadMessagePopup: PropTypes.func,
   data: PropTypes.array,
   metaData: PropTypes.object,
   styles: PropTypes.object,
@@ -84,6 +86,7 @@ DataGrid.propTypes = {
 
 DataGrid.defaultProps = {
   getSelectedRow: () => {},
+  fileDownloadMessagePopup: () => {},
   data: [],
   metaData: {},
   styles: {},

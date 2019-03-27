@@ -31,6 +31,7 @@ class DataGridSection extends Component {
             data={this.props.data}
             metaData={formattedMetaData(this.props.metaData)}
             styles={this.props.styles}
+            fileDownloadMessagePopup={this.props.fileDownloadMessagePopup}
           />
         </div>
       </div>
@@ -39,12 +40,14 @@ class DataGridSection extends Component {
 }
 DataGridSection.propTypes = {
   getSelectedRow: PropTypes.func,
+  fileDownloadMessagePopup: PropTypes.func,
   data: PropTypes.array,
   metaData: PropTypes.object,
   styles: PropTypes.object,
 };
 DataGridSection.defaultProps = {
   getSelectedRow: () => {},
+  fileDownloadMessagePopup: () => {},
   data: [],
   metaData: {},
   styles: {},

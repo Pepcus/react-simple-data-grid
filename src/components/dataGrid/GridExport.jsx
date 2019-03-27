@@ -8,6 +8,9 @@ import isEmpty from 'lodash/isEmpty';
  * @type {class}
 * */
 class GridExport extends Component {
+  constructor(props) {
+    super(props);
+  }
   renderCSVLinkClassName() {
     if (isEmpty(this.props.currentData)) {
       return 'disable-export-link';
@@ -25,7 +28,10 @@ class GridExport extends Component {
         headers={header}
         data={this.props.currentData}
         title="Export"
-        className={this.renderCSVLinkClassName()}>
+        asyncOnClick={true}
+        className={this.renderCSVLinkClassName()}
+        onClick={() => { if (this.props.fileDownloadMessagePopup) { return this.props.fileDownloadMessagePopup(true); } }}
+      >
         <IoMdDownload />
       </CSVLink>
     );
@@ -33,10 +39,12 @@ class GridExport extends Component {
 }
 export default GridExport;
 GridExport.propTypes = {
+  fileDownloadMessagePopup: PropTypes.func,
   currentData: PropTypes.array,
   currentMetaData: PropTypes.object,
 };
 GridExport.defaultProps = {
   currentData: [],
   currentMetaData: {},
+  fileDownloadMessagePopup: () => {},
 };

@@ -199,6 +199,7 @@ class Table extends Component {
     return (
       <div className={`table-drawer table-drawer__${drawerPosition}`}>
         <TableDrawer
+          fileDownloadMessagePopup={this.props.fileDownloadMessagePopup}
           positions={positions}
           currentData={currentData}
           currentMetaData={this.state.currentMetaData}
@@ -221,7 +222,6 @@ class Table extends Component {
     }
     return null;
   }
-
   render() {
     return (
       <div className="table">
@@ -256,6 +256,7 @@ class Table extends Component {
 
 Table.propTypes = {
   getSelectedRow: PropTypes.func,
+  fileDownloadMessagePopup: PropTypes.func,
   data: PropTypes.array,
   metaData: PropTypes.object,
   styles: PropTypes.object,
@@ -263,6 +264,7 @@ Table.propTypes = {
 
 Table.defaultProps = {
   getSelectedRow: () => {},
+  fileDownloadMessagePopup: () => {},
   data: [],
   metaData: {},
   styles: {},
