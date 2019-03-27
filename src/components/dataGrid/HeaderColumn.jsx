@@ -9,9 +9,7 @@ class HeaderColumn extends React.Component {
   constructor(props) {
     super(props);
     this.MyRef = React.createRef();
-    this.state = {
-      width: window.innerWidth,
-    };
+    this.state = {};
     this.onResize = this.onResize.bind(this);
     this.renderFirstDiv = this.renderFirstDiv.bind(this);
     this.renderSecondDiv = this.renderSecondDiv.bind(this);
