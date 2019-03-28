@@ -34,7 +34,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development --open --config webpack.config.dev.js",
-    "build": "webpack"
+    "build": "webpack && webpack --config webpack.config.demo.js"
   },
   "keywords": [
     "react"
