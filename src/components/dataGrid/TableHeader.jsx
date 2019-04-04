@@ -32,18 +32,18 @@ class TableHeader extends Component {
     }
   }
 
-  setSortObject(columnName) {
-    this.props.setSortObject(columnName, this.state.sortOrder);
+  setSortObject(columnName, columnType) {
+    this.props.setSortObject(columnName, this.state.sortOrder, columnType);
   }
 
-  onClickSort(columnName, disableFilter) {
+  onClickSort(columnName, disableFilter, columnType) {
     if (!disableFilter) {
       this.setState({
         columnKey: columnName,
         sortOrder: this.state.sortOrder = (this.state.sortOrder === 'asc') ? 'desc' : 'asc',
       });
-      this.props.onSort(columnName);
-      this.setSortObject(columnName);
+      this.props.onSort(columnName, columnType);
+      this.setSortObject(columnName, columnType);
     }
   }
   getSortIcon(eachColumnKey) {

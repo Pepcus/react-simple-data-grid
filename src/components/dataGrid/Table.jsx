@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import orderBy from 'lodash/orderBy';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 
@@ -9,7 +8,7 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableDrawer from './TableDrawer';
 import TableFooter from './TableFooter';
-import { paginatedData, getNoOfPages } from '../.././utils/CommonUtils';
+import { paginatedData, getNoOfPages, getSortedData } from '../.././utils/CommonUtils';
 import '../../datagrid.css';
 import CustomLoader from './CustomLoader';
 /**
@@ -35,6 +34,7 @@ class Table extends Component {
       sort: {
         sortOrder: '',
         columnName: '',
+        columnType: '',
       },
     };
     this.onSearch = this.onSearch.bind(this);
@@ -54,7 +54,13 @@ class Table extends Component {
     if (!isEqual(nextProps.data, this.props.data)
       || !isEqual(nextProps.metaData, this.props.metaData)) {
       let temporaryData = filterData(this.state.appliedFilter, nextProps.data);
-      temporaryData = orderBy(temporaryData, this.state.sort.columnName, this.state.sort.sortOrder);
+      temporaryData = getSortedData(
+        {
+          columnName: this.state.sort.columnName,
+          columnType: this.state.sort.columnType,
+          sortOrder: this.state.sort.sortOrder,
+          data: temporaryData,
+        });
       this.setState({
         originalData: nextProps.data,
         currentData: temporaryData,
@@ -65,12 +71,13 @@ class Table extends Component {
     }
   }
 
-  setSortObject(columnName, sortOrder) {
+  setSortObject(columnName, sortOrder, columnType) {
     this.setState({
       sort: {
         ...this.state.sort,
         columnName,
         sortOrder,
+        columnType,
       },
     });
   }
@@ -131,6 +138,7 @@ class Table extends Component {
       sort: {
         sortOrder: '',
         columnName: '',
+        columnType: '',
       },
     });
   }
@@ -141,8 +149,13 @@ class Table extends Component {
       ...appliedFilter,
       [inputValue.selectedColumn]: inputValue.searchString,
     };
-    const temporaryData
-      = orderBy(this.state.originalData, this.state.sort.columnName, this.state.sort.sortOrder);
+    const temporaryData = getSortedData(
+      {
+        columnName: this.state.sort.columnName,
+        columnType: this.state.sort.columnType,
+        sortOrder: this.state.sort.sortOrder,
+        data: this.state.originalData,
+      });
     this.setState({
       appliedFilter,
       currentData: filterData(appliedFilter, temporaryData),
@@ -158,19 +171,31 @@ class Table extends Component {
     });
   }
 
-  onSort(columnId) {
+  onSort(columnId, columnType) {
     if (this.state.sort.sortOrder === 'asc') {
-      const sortedData = orderBy(this.state.currentData, [columnId], ['desc']);
+      const sortedData = getSortedData(
+        {
+          columnName: columnId,
+          columnType: columnType,
+          sortOrder: 'desc',
+          data: this.state.currentData,
+        });
       this.setState({
         currentData: sortedData,
-        sort: { ...this.state.sort, sortOrder: 'desc' },
+        sort: { ...this.state.sort, sortOrder: 'desc', columnType: columnType },
       });
 
     } else {
-      const sortedData = orderBy(this.state.currentData, [columnId], ['asc']);
+      const sortedData = getSortedData(
+        {
+          columnName: columnId,
+          columnType: columnType,
+          sortOrder: 'asc',
+          data: this.state.currentData,
+        });
       this.setState({
         currentData: sortedData,
-        sort: { ...this.state.sort, sortOrder: 'asc' },
+        sort: { ...this.state.sort, sortOrder: 'asc', columnType: columnType },
       });
     }
   }
