@@ -35,6 +35,7 @@ class Table extends Component {
         sortOrder: '',
         columnName: '',
         columnType: '',
+        emptyCells: '',
       },
     };
     this.onSearch = this.onSearch.bind(this);
@@ -51,7 +52,7 @@ class Table extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { columnName, columnType, sortOrder } = this.state.sort;
+    const { columnName, columnType, sortOrder, emptyCells } = this.state.sort;
     if (!isEqual(nextProps.data, this.props.data)
       || !isEqual(nextProps.metaData, this.props.metaData)) {
       let temporaryData = filterData(this.state.appliedFilter, nextProps.data);
@@ -61,7 +62,7 @@ class Table extends Component {
           columnType,
           sortOrder,
           data: temporaryData,
-          emptyCells: this.props.metaData.emptyCells,
+          emptyCells,
         });
       this.setState({
         originalData: nextProps.data,
@@ -73,13 +74,14 @@ class Table extends Component {
     }
   }
 
-  setSortObject(columnName, sortOrder, columnType) {
+  setSortObject(columnName, sortOrder, columnType, emptyCells) {
     this.setState({
       sort: {
         ...this.state.sort,
         columnName,
         sortOrder,
         columnType,
+        emptyCells,
       },
     });
   }
@@ -141,12 +143,13 @@ class Table extends Component {
         sortOrder: '',
         columnName: '',
         columnType: '',
+        emptyCells: '',
       },
     });
   }
 
   onFilterChange(inputValue) {
-    const { columnName, columnType, sortOrder } = this.state.sort;
+    const { columnName, columnType, sortOrder, emptyCells } = this.state.sort;
     let { appliedFilter } = this.state;
     appliedFilter = {
       ...appliedFilter,
@@ -158,7 +161,7 @@ class Table extends Component {
         columnType,
         sortOrder,
         data: this.state.originalData,
-        emptyCells: this.state.originalMetaData.emptyCells,
+        emptyCells,
       });
     this.setState({
       appliedFilter,
@@ -175,7 +178,7 @@ class Table extends Component {
     });
   }
 
-  onSort(columnId, columnType) {
+  onSort(columnId, columnType, emptyCells) {
     // If current sort order is ascending then assign next sort order to descending
     if (this.state.sort.sortOrder === 'asc') {
       const sortedData = getSortedData(
@@ -184,11 +187,11 @@ class Table extends Component {
           columnType,
           sortOrder: 'desc',
           data: this.state.currentData,
-          emptyCells: this.state.originalMetaData.emptyCells,
+          emptyCells,
         });
       this.setState({
         currentData: sortedData,
-        sort: { ...this.state.sort, sortOrder: 'desc', columnType },
+        sort: { ...this.state.sort, sortOrder: 'desc', columnType, emptyCells },
       });
 
     } else {
@@ -199,11 +202,11 @@ class Table extends Component {
           columnType,
           sortOrder: 'asc',
           data: this.state.currentData,
-          emptyCells: this.state.originalMetaData.emptyCells,
+          emptyCells,
         });
       this.setState({
         currentData: sortedData,
-        sort: { ...this.state.sort, sortOrder: 'asc', columnType },
+        sort: { ...this.state.sort, sortOrder: 'asc', columnType, emptyCells },
       });
     }
   }

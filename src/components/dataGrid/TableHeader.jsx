@@ -16,6 +16,7 @@ class TableHeader extends Component {
     this.state = {
       sortOrder: props.sort.sortOrder,
       columnKey: props.sort.columnName,
+      emptyCells: props.sort.emptyCells,
     };
     this.onClickSort = this.onClickSort.bind(this);
     this.getSortIcon = this.getSortIcon.bind(this);
@@ -32,11 +33,11 @@ class TableHeader extends Component {
     }
   }
 
-  setSortObject(columnName, columnType) {
-    this.props.setSortObject(columnName, this.state.sortOrder, columnType);
+  setSortObject(columnName, columnType, emptyCells) {
+    this.props.setSortObject(columnName, this.state.sortOrder, columnType, emptyCells);
   }
 
-  onClickSort(columnName, disableFilter, columnType) {
+  onClickSort(columnName, disableFilter, columnType, emptyCells) {
     if (!disableFilter) {
       this.setState({
         columnKey: columnName,
@@ -44,8 +45,8 @@ class TableHeader extends Component {
         // else ascending
         sortOrder: this.state.sortOrder = (this.state.sortOrder === 'asc') ? 'desc' : 'asc',
       });
-      this.props.onSort(columnName, columnType);
-      this.setSortObject(columnName, columnType);
+      this.props.onSort(columnName, columnType, emptyCells);
+      this.setSortObject(columnName, columnType, emptyCells);
     }
   }
   getSortIcon(eachColumnKey) {

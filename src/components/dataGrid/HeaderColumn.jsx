@@ -11,7 +11,7 @@ const HeaderColumn = ({ allCheckBox, handleAllCheckBoxChange, enableRowSelection
         <div
           title={columnMetaData.label}
           className="table-heading"
-          onClick={e => onClickSort(columnMetaData.key, columnMetaData.type, e)}
+          onClick={e => onClickSort(columnMetaData.key, columnMetaData.type, columnMetaData.emptyCells, e)}
           id={columnMetaData.key}
         >{getSortIcon()}{columnMetaData.label}
           <input type="checkbox" onChange={handleAllCheckBoxChange} checked={allCheckBox ? 'checked' : ''} />
@@ -24,7 +24,7 @@ const HeaderColumn = ({ allCheckBox, handleAllCheckBoxChange, enableRowSelection
       <div
         title={columnMetaData.label}
         className="table-heading"
-        onClick={e => onClickSort(columnMetaData.key, columnMetaData.disableFilter, columnMetaData.type, e)}
+        onClick={e => onClickSort(columnMetaData.key, columnMetaData.disableFilter, columnMetaData.type, columnMetaData.emptyCells, e)}
         id={columnMetaData.key}
       >{getSortIcon(columnMetaData.key)}{columnMetaData.label}
       </div>
