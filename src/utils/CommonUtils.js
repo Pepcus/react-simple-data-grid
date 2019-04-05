@@ -71,7 +71,23 @@ export const getSortedData = ({ columnName, columnType, sortOrder, data, emptyCe
       dataCopy = numericValues.concat(otherData).concat(emptyValues);
     }
   } else if (columnType === 'string') {
-    dataCopy = orderBy(dataCopy, columnName, sortOrder);
+    const emptyValues = [];
+    let stringValues = [];
+    dataCopy.forEach((object) => {
+      if (object[columnName] === '' || object[columnName] === emptyCells) {
+        emptyValues.push(object);
+      } else {
+        stringValues.push(object);
+      }
+    });
+    if (!isEmpty(stringValues)) {
+      stringValues = orderBy(stringValues, columnName, sortOrder);
+    }
+    if (sortOrder === 'asc') {
+      dataCopy = emptyValues.concat(stringValues);
+    } else if (sortOrder === 'desc') {
+      dataCopy = stringValues.concat(emptyValues);
+    }
   }
   return dataCopy;
 };
