@@ -44,31 +44,34 @@ export const paginatedData = ({ currentData, recordsPerPage, currentPage }) => {
   return [];
 };
 
-export const getSortedData = ({ columnName, columnType, sortOrder, data }) => {
-  let temporaryData = cloneDeep(data);
+export const getSortedData = ({ columnName, columnType, sortOrder, data, emptyCells }) => {
+  let dataCopy = cloneDeep(data);
   if (columnType === 'Number') {
-    let stringContained = [];
-    let numberContained = [];
-    let undefinedContained = [];
-    temporaryData.forEach((object) => {
-      if (object[columnName] === "") {
-        undefinedContained.push(object);
-      } else if (isNaN(object[columnName])) {
-        stringContained.push(object);
+    let numericValues = [];
+    const emptyValues = [];
+    let otherData = [];
+    dataCopy.forEach((object) => {
+      if (object[columnName] === '' || object[columnName] === emptyCells) {
+        emptyValues.push(object);
       } else if (!isNaN(object[columnName])) {
-        numberContained.push(object);
+        numericValues.push(object);
+      } else {
+        otherData.push(object);
       }
     });
-    if (!isEmpty(numberContained)) {
-       numberContained = orderBy(numberContained, columnName, sortOrder);
+    if (!isEmpty(numericValues)) {
+      numericValues = orderBy(numericValues, columnName, sortOrder);
+    }
+    if (!isEmpty(otherData)) {
+      otherData = orderBy(otherData, columnName, sortOrder);
     }
     if (sortOrder === 'asc') {
-      temporaryData = undefinedContained.concat(numberContained).concat(stringContained);
+      dataCopy = emptyValues.concat(otherData).concat(numericValues);
     } else if (sortOrder === 'desc') {
-      temporaryData = stringContained.concat(numberContained).concat(undefinedContained);
+      dataCopy = numericValues.concat(otherData).concat(emptyValues);
     }
   } else if (columnType === 'string') {
-    temporaryData = orderBy(temporaryData, columnName, sortOrder);
+    dataCopy = orderBy(dataCopy, columnName, sortOrder);
   }
-  return temporaryData;
+  return dataCopy;
 };

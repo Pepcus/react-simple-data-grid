@@ -51,15 +51,17 @@ class Table extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { columnName, columnType, sortOrder } = this.state.sort;
     if (!isEqual(nextProps.data, this.props.data)
       || !isEqual(nextProps.metaData, this.props.metaData)) {
       let temporaryData = filterData(this.state.appliedFilter, nextProps.data);
       temporaryData = getSortedData(
         {
-          columnName: this.state.sort.columnName,
-          columnType: this.state.sort.columnType,
-          sortOrder: this.state.sort.sortOrder,
+          columnName,
+          columnType,
+          sortOrder,
           data: temporaryData,
+          emptyCells: this.props.metaData.emptyCells,
         });
       this.setState({
         originalData: nextProps.data,
@@ -144,6 +146,7 @@ class Table extends Component {
   }
 
   onFilterChange(inputValue) {
+    const { columnName, columnType, sortOrder } = this.state.sort;
     let { appliedFilter } = this.state;
     appliedFilter = {
       ...appliedFilter,
@@ -151,10 +154,11 @@ class Table extends Component {
     };
     const temporaryData = getSortedData(
       {
-        columnName: this.state.sort.columnName,
-        columnType: this.state.sort.columnType,
-        sortOrder: this.state.sort.sortOrder,
+        columnName,
+        columnType,
+        sortOrder,
         data: this.state.originalData,
+        emptyCells: this.state.originalMetaData.emptyCells,
       });
     this.setState({
       appliedFilter,
@@ -172,30 +176,34 @@ class Table extends Component {
   }
 
   onSort(columnId, columnType) {
+    // If current sort order is ascending then assign next sort order to descending
     if (this.state.sort.sortOrder === 'asc') {
       const sortedData = getSortedData(
         {
           columnName: columnId,
-          columnType: columnType,
+          columnType,
           sortOrder: 'desc',
           data: this.state.currentData,
+          emptyCells: this.state.originalMetaData.emptyCells,
         });
       this.setState({
         currentData: sortedData,
-        sort: { ...this.state.sort, sortOrder: 'desc', columnType: columnType },
+        sort: { ...this.state.sort, sortOrder: 'desc', columnType },
       });
 
     } else {
+      // If current sort order is descending then assign next sort order to ascending
       const sortedData = getSortedData(
         {
           columnName: columnId,
-          columnType: columnType,
+          columnType,
           sortOrder: 'asc',
           data: this.state.currentData,
+          emptyCells: this.state.originalMetaData.emptyCells,
         });
       this.setState({
         currentData: sortedData,
-        sort: { ...this.state.sort, sortOrder: 'asc', columnType: columnType },
+        sort: { ...this.state.sort, sortOrder: 'asc', columnType },
       });
     }
   }

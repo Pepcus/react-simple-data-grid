@@ -40,6 +40,8 @@ class TableHeader extends Component {
     if (!disableFilter) {
       this.setState({
         columnKey: columnName,
+        // If current sort order is ascending then assign next sort order to descending
+        // else ascending
         sortOrder: this.state.sortOrder = (this.state.sortOrder === 'asc') ? 'desc' : 'asc',
       });
       this.props.onSort(columnName, columnType);
@@ -49,14 +51,14 @@ class TableHeader extends Component {
   getSortIcon(eachColumnKey) {
     if (eachColumnKey === this.state.columnKey && this.state.sortOrder === 'desc') {
       return (
-        <span className="sort-order-up">
-          <FaArrowUp />
+        <span className="sort-order-down">
+          <FaArrowDown />
         </span>
       );
     } else if (eachColumnKey === this.state.columnKey && this.state.sortOrder === 'asc') {
       return (
-        <span className="sort-order-down">
-          <FaArrowDown />
+        <span className="sort-order-up">
+          <FaArrowUp />
         </span>
       );
     }
