@@ -3648,6 +3648,7 @@ export const tableMetaData = () => ({
     'exportButton': false,
     'totalRecords': true,
   },
+  emptyCells: '',
   enableRowSelection: true,
   enableAllRowSelection: true,
   recordsPerPage: 25,

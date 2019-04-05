@@ -18,15 +18,17 @@ const checkValidation = (metaData) => {
     console.warn("'enableAllRowSelection config will not be used as enableRowSelection is set to false'");
   }
 };
-const formattedData = (data, columnsConfig) => {
-  const allkeys = columnsConfig.map((columnConfig) => {
+const formattedData = (data, columnsConfig, emptyCells) => {
+  const allKeys = columnsConfig.map((columnConfig) => {
     const obj = { key: columnConfig.key, type: columnConfig.type };
     return obj;
   });
   return data.map((dataObj) => {
     const dataObjCopy = cloneDeep(dataObj);
-    allkeys.forEach((obj) => {
-      if (dataObjCopy[obj.key] === undefined || dataObjCopy[obj.key] === null) {
+    allKeys.forEach((obj) => {
+      if ((dataObjCopy[obj.key] === undefined || dataObjCopy[obj.key] === null || dataObjCopy[obj.key] === '') && emptyCells) {
+        dataObjCopy[obj.key] = emptyCells;
+      } else if (dataObjCopy[obj.key] === undefined || dataObjCopy[obj.key] === null) {
         dataObjCopy[obj.key] = '';
       }
       if (obj.type === 'Number' && dataObjCopy[obj.key].trim().length !== 0 && !isEmpty(dataObjCopy[obj.key]) && !isNaN(dataObjCopy[obj.key])) {
@@ -63,7 +65,7 @@ class DataGrid extends Component {
   }
   render() {
     checkValidation(this.props.metaData);
-    const tempData = formattedData(addUniqueKey(this.props.data), this.props.metaData.headerConfig);
+    const tempData = formattedData(addUniqueKey(this.props.data), this.props.metaData.headerConfig, this.props.metaData.emptyCells);
     return (
       <DataGridSection
         getSelectedRow={this.props.getSelectedRow}

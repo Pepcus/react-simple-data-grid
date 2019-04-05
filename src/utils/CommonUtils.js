@@ -10,6 +10,7 @@ export const addUniqueKey = (data) => {
   return data;
 };
 
+
 export const isEmpty = (data) => {
   for (const key in data) {
     if (Object.hasOwnProperty.call(data, key)) return false;
@@ -48,23 +49,23 @@ export const getSortedData = ({ columnName, columnType, sortOrder, data }) => {
   if (columnType === 'Number') {
     let stringContained = [];
     let numberContained = [];
+    let undefinedContained = [];
     temporaryData.forEach((object) => {
-      if (isNaN(object[columnName])) {
+      if (object[columnName] === "") {
+        undefinedContained.push(object);
+      } else if (isNaN(object[columnName])) {
         stringContained.push(object);
       } else if (!isNaN(object[columnName])) {
         numberContained.push(object);
       }
     });
-    if (!isEmpty(stringContained)) {
-       stringContained = orderBy(stringContained, columnName, sortOrder);
-    }
     if (!isEmpty(numberContained)) {
        numberContained = orderBy(numberContained, columnName, sortOrder);
     }
     if (sortOrder === 'asc') {
-      temporaryData = stringContained.concat(numberContained);
+      temporaryData = undefinedContained.concat(numberContained).concat(stringContained);
     } else if (sortOrder === 'desc') {
-      temporaryData = numberContained.concat(stringContained);
+      temporaryData = stringContained.concat(numberContained).concat(undefinedContained);
     }
   } else if (columnType === 'string') {
     temporaryData = orderBy(temporaryData, columnName, sortOrder);
