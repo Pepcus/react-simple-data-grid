@@ -361,7 +361,7 @@ body{
     border-top: 0;
     width: 100%;
     overflow: hidden;
-    background-color: #f2f2f7;
+    background-color: #ececec;
 }
 .search-input-bar {
     padding: 7px;
@@ -406,7 +406,8 @@ body{
 .clearFilterButton{
     border-radius: 3px;
     cursor: pointer;
-    background-color: #888787;
+    /*background-color: #888787;*/
+    background-color: #4c5e73;
     border: none;
     outline: none;
     color: #fff;
@@ -417,7 +418,8 @@ body{
 }
 .clearFilterButton:hover {
     transition: 0.3s all;
-    background: #747474;
+    /*background: #747474;*/
+    background: #374a5f;
 }
 .wrapper-pagination-search{
     display: flex;
@@ -472,12 +474,13 @@ body{
     cursor: pointer;
     outline: none;
     color: white;
-    background: #807f7f;
+    /*background: #807f7f;*/
+    background: #4c5e73;
     border-radius: 3px;
 }
 .grid-button:hover {
     transition: 0.3s all;
-    background: #706e6e;
+    background: #374a5f;
 }
 .cell__grid__select-column input[type = "checkbox"] {
     height: 20px;
