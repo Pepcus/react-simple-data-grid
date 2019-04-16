@@ -174,7 +174,8 @@ td {
 }
 .search:hover {
     transition: 0.3s all;
-    background: #e1dcdc;
+    background: #4c5e73;
+    color: #fff;
 }
 .search__circle {
     width: 10px;
