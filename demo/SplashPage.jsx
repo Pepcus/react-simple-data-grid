@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 import PropTypes from 'prop-types';
+import { FaPencilAlt } from 'react-icons/fa';
 
 import DataGrid from '../src';
 import { tableMetaData, getStyles, tableData } from './Data';
 
 const EditButton = ({ rowData }) => (
-  <div><button onClick={() => { alert(`First Name: ${rowData.firstName}, Last Name: ${rowData.lastName}`); }}>Edit</button></div>
+  <div className="grid-button-wrapper">
+    <button onClick={() => { alert(`First Name: ${rowData.firstName}, Last Name: ${rowData.lastName}`); }} className="grid-button">
+      <FaPencilAlt className="data-grid-icon" />
+      Edit
+    </button>
+  </div>
 );
 
 const HelloMessage = () => (
-  <div>
-    <button type="checkbox" onClick={() => { alert('Hello'); }}>Hello</button>
+  <div className="grid-header-button grid-button-wrapper">
+    <button type="checkbox" onClick={() => { alert('Hello'); }} className="grid-button">
+      <FaPencilAlt className="data-grid-icon" />
+      Hello
+    </button>
   </div>
 );
 
@@ -54,23 +63,21 @@ class SplashPage extends Component {
   }
 
   formatTableData() {
-    let temporaryTableData = this.state.tableData.map((tableDataObject) => {
-      return { ...tableDataObject, isChecked: false };
-    });
+    const temporaryTableData = this.state.tableData.map(tableDataObject => ({ ...tableDataObject, isChecked: false }));
     this.setState({
       tableData: temporaryTableData,
     });
   }
 
   getSelectedRow(selectedRow) {
-   const temporaryTableData = this.state.tableData.map((tableDataObject) => {
-     let temporaryObject = tableDataObject;
-       selectedRow.forEach((selectedRowObject) => {
-         if (selectedRowObject.id === tableDataObject.id) {
-           temporaryObject = selectedRowObject;
+    const temporaryTableData = this.state.tableData.map((tableDataObject) => {
+      let temporaryObject = tableDataObject;
+      selectedRow.forEach((selectedRowObject) => {
+        if (selectedRowObject.id === tableDataObject.id) {
+          temporaryObject = selectedRowObject;
         }
       });
-     return temporaryObject;
+      return temporaryObject;
     });
     this.setState({
       tableData: temporaryTableData,

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaSearch, FaTrash } from 'react-icons/fa';
+
 import upperFirst from 'lodash/upperFirst';
 
 /*
@@ -50,7 +52,10 @@ class Search extends Component {
   renderClearButton() {
     if (this.props.position.clearButton) {
       return (
-        <button className="clearFilterButton" onClick={this.props.handleReRenderButtonClick}> Clear </button>
+        <button className="clearFilterButton" onClick={this.props.handleReRenderButtonClick}>
+          <FaTrash className="data-grid-icon" />
+          Clear
+        </button>
       );
     }
     return null;
@@ -89,16 +94,15 @@ class Search extends Component {
             {this.addAllOption()}
             {this.addOptions()}
           </select>
-          <label>
+          <label className="input-grid-label">
             <input className="search-input" type="text" onChange={this.handleInputChange} />
+            <div
+              className="search"
+              onClick={this.onClickSearch}
+            >
+              <FaSearch/>
+            </div>
           </label>
-          <div
-            className="search"
-            onClick={this.onClickSearch}
-          >
-            <div className="search__circle" />
-            <div className="search__rectangle" />
-          </div>
           {this.renderClearButton()}
         </div>
 
