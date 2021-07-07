@@ -96,6 +96,24 @@ export const getSortedData = ({ columnName, columnType = 'string', sortOrder, da
     } else if (sortOrder === 'desc') {
       dataCopy = stringValues.concat(emptyValues);
     }
+  } else {
+    const emptyValues = [];
+    let values = [];
+    dataCopy.forEach((object) => {
+      if (object[columnName] === '' || object[columnName] === emptyCells) {
+        emptyValues.push(object);
+      } else {
+        values.push(object);
+      }
+    });
+    if (!isEmpty(values)) {
+      values = orderBy(values, columnName, sortOrder);
+    }
+    if (sortOrder === 'asc') {
+      dataCopy = emptyValues.concat(values);
+    } else if (sortOrder === 'desc') {
+      dataCopy = values.concat(emptyValues);
+    }
   }
   return dataCopy;
 };
